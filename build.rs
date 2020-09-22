@@ -1,6 +1,12 @@
 use std::env;
 
 fn main() {
+    if cfg!(feature = "pre-generated-bindings") {
+        // only invoke pkgconf, and use the pre-generated bindings in srtp.rs
+        find_libsrtp2("");
+        return;
+    }
+
     let out_dir = &env::var("OUT_DIR").unwrap();
 
     println!("cargo:rerun-if-changed=wrapper.h");
