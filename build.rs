@@ -26,6 +26,14 @@ fn main() {
         return;
     }
 
+    if cfg!(all(feature = "dynamic-linking", target_env = "msvc")) {
+        panic!("dynamic-linking feature is not currently supported for MSVC!");
+    }
+
+    if cfg!(all(feature = "dynamic-linking", feature = "skip-linking")) {
+        panic!("dynamic-linking feature cannot be used alongside skip-linking feature!");
+    }
+
     find_libsrtp2(out_dir);
 }
 
@@ -44,7 +52,7 @@ fn find_libsrtp2(_out_dir: &str) {
 fn find_libsrtp2(_out_dir: &str) {
     pkg_config::Config::new()
         .atleast_version("2.3.0")
-        .statik(true)
+        .statik(cfg!(not(feature = "dynamic-linking")))
         .probe("libsrtp2")
         .expect("Failed to find libsrtp2 via pkg-config");
 }

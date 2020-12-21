@@ -29,6 +29,7 @@ skip-linking = []
 build = ["make-cmd"]
 enable-openssl = ["openssl-sys"]
 build-openssl = ["enable-openssl", "openssl-sys/vendored"]
+dynamic-linking = []
 
 [package.metadata.docs.rs]
 features = ["skip-linking", "enable-openssl"]
